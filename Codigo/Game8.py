@@ -17,9 +17,25 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 ORANGE = (241, 163, 64)
 
-#rutas
-REBOTE_TRASERO = "Music/efectos/rebote3.wav"
-REBOTE_DELANTERO = "Music/efectos/rebote6.wav"
+#Musica
+REBOTE_TRASERO = "Music/efectos/rebote5.wav" 
+REBOTE_DELANTERO = "Music/efectos/rebote2.wav" #2, 3, 5, 8
+DRAW = "Music/efectos/draw.wav"
+WIN = "Music/efectos/win.wav"
+RIP_VIDA = "Music/efectos/ripVida.wav"
+MUSIC_FONDO1 = "Music/fondos/fondo-ViolentPornography.wav"
+MUSIC_FONDO2 = "Music/fondos/fondo-shots.wav"
+MUSIC_FONDO3 = "Music/fondos/MusicGame.wav"
+
+draw = pygame.mixer.Sound(DRAW)
+win = pygame.mixer.Sound(WIN)
+reboteDelantero = pygame.mixer.Sound(REBOTE_DELANTERO)
+reboteTrasero = pygame.mixer.Sound(REBOTE_TRASERO)
+musicFondo = pygame.mixer.Sound(MUSIC_FONDO1)
+ripVida = pygame.mixer.Sound(RIP_VIDA)
+
+
+
 #jugadores
 velocidadJugador = 8
 velocidadBola = 10
@@ -50,25 +66,29 @@ for img in LstVidas:
 	LstRectVidas.append(LstVidas[x].get_rect())
 	x += 1
 
-#POSVIDAS ME SIRVE PARA ALINEAR LAS VIDAS EN LA PANTALLA
+#POS_VIDAS ME SIRVE PARA ALINEAR LAS VIDAS EN LA PANTALLA DE FORMA HORIZONTAL y VERTICAL(x;y)
 pixelsVida = 50
 cantVidas = 6
-espacioBlanco = (ALTO - (pixelsVida*cantVidas)) // (cantVidas+1)
-POSVIDAS = (espacioBlanco,
-			(espacioBlanco*2)+pixelsVida,
-			(espacioBlanco*3)+(pixelsVida*2),
-			(espacioBlanco*4)+(pixelsVida*3),
-			(espacioBlanco*5)+(pixelsVida*4),
-			(espacioBlanco*6)+(pixelsVida*5))
+zonaSuperior = 120
+zonaInferior = 50
+zona_juego = ALTO-zonaSuperior-zonaInferior  #esos numeros dependen del fondo que le ponga
+espacioBlanco = (zona_juego - (pixelsVida*cantVidas)) // (cantVidas+1)
+POS_VIDAS_VERTICAL = (zonaSuperior + espacioBlanco,
+			(zonaSuperior + (espacioBlanco*2))+pixelsVida,
+			(zonaSuperior + (espacioBlanco*3))+(pixelsVida*2),
+			(zonaSuperior + (espacioBlanco*4))+(pixelsVida*3),
+			(zonaSuperior + (espacioBlanco*5))+(pixelsVida*4),
+			(zonaSuperior + (espacioBlanco*6))+(pixelsVida*5))
+POS_VIDAS_HORIZONTAL = (85, ANCHO-135)
 
 #CREO UNA LISTA PARA GUARDAR EL RECTANGULO DE CADA IMG DE LA VIDA 
 for x in range(cantVidas):
-	LstRectVidas[x].left, LstRectVidas[x].top = -6, POSVIDAS[x]
+	LstRectVidas[x].left, LstRectVidas[x].top = POS_VIDAS_HORIZONTAL[0], POS_VIDAS_VERTICAL[x]
 i = cantVidas
 
-#LO MISMO PERO CON LOS QUE FALTAN
+#LO MISMO PERO CON LOS QUE FALTAN DEL OTRO JUGADOR
 for x in range(cantVidas):
-	LstRectVidas[i].left, LstRectVidas[i].top = ANCHO-43, POSVIDAS[x]
+	LstRectVidas[i].left, LstRectVidas[i].top = POS_VIDAS_HORIZONTAL[1], POS_VIDAS_VERTICAL[x]
 	i += 1
 
 FuenteArial = pygame.font.SysFont("Arial", 56)
@@ -77,8 +97,7 @@ FuenteArial2 = pygame.font.SysFont("Arial", 40)
 aux = 1; score1 = 0; score2 = 0 
 #bucle de fin de partida
 while True:
-	musicGame = pygame.mixer.Sound("Music/fondos/musicGame.wav")
-	musicGame.play()
+	musicFondo.play()
 
 	#POSICIONO A LOS JUGADORES Y LA BOLA 
 	jugador1.setPos(83, (ALTO//2)-(jugador1.getPixels()[0]//2))
@@ -224,16 +243,14 @@ while True:
 			
 			if (bola.getPosX() >= (jugador1.getPosX()+(jugador1.getPixels()[0]//2))):
 				direccionHorizontal = 'derecha'
-				reboteDelantero1 = pygame.mixer.Sound(REBOTE_DELANTERO)
-				reboteDelantero1.play()
+				reboteDelantero.play()
 				if(((bola.getPosY()+(bola.getPixels()[1] // 2)) <= (jugador1.getPosY()+(jugador1.getPixels()[1]//2)))
 				and (bola.getPosY()+bola.getPixels()[1]) >= jugador1.getPosY()):
 					direccionVertical = 'subir'
 				else:
 					direccionVertical = 'bajar'
 			else:
-				reboteTrasero1 = pygame.mixer.Sound(REBOTE_TRASERO)
-				reboteTrasero1.play()
+				reboteTrasero.play()
 				direccionHorizontal = 'izquierda'
 				if ((bola.getPosY()+bola.getPixels()[1]//2) <= (jugador1.getPosY()+(jugador1.getPixels()[1]//2))):
 					direccionVertical = 'subir'
@@ -247,8 +264,7 @@ while True:
 			
 			if (bola.getPosX()+bola.getPixels()[0] >= jugador2.getPosX()
 			and bola.getPosX()+bola.getPixels()[0] <= jugador2.getPosX()+(jugador2.getPixels()[0]//2)):
-				reboteDelantero2 = pygame.mixer.Sound(REBOTE_DELANTERO)
-				reboteDelantero2.play()
+				reboteDelantero.play()
 				direccionHorizontal = 'izquierda'
 				if(((bola.getPosY()+(bola.getPixels()[1] // 2)) <= (jugador2.getPosY()+(jugador2.getPixels()[1]//2)))
 				and (bola.getPosY()+bola.getPixels()[1]) >= jugador2.getPosY()):
@@ -256,8 +272,7 @@ while True:
 				else:
 					direccionVertical = 'bajar'
 			else:
-				reboteTrasero2 = pygame.mixer.Sound(REBOTE_TRASERO)
-				reboteTrasero2.play()
+				reboteTrasero.play()
 				direccionHorizontal = 'derecha'
 				if(((bola.getPosY()+(bola.getPixels()[1] // 2)) <= (jugador2.getPosY()+(jugador2.getPixels()[1]//2)))
 				and (bola.getPosY()+bola.getPixels()[1]) >= jugador2.getPosY()):
@@ -294,6 +309,8 @@ while True:
 		# y pongo la posicion de la vida en False si es que hubo alguna colision
 		for x in range(cantVidas*2):
 			if(LstRectVidas[x].colliderect(bola.getRectangulo()) == True):
+				if vidasOn[x]:
+					ripVida.play()
 				vidasOn[x] = False
 
 		cont1 = 0; cont2 = 0; x = 0 ; i = cantVidas
@@ -321,18 +338,13 @@ while True:
 		i = 0; x = 0
 		for vida in LstVidas:
 			if i <= cantVidas-1 and vidasOn[i]: 
-				ventana.blit(vida, (-6,POSVIDAS[x]))
+				ventana.blit(vida, (POS_VIDAS_HORIZONTAL[0],POS_VIDAS_VERTICAL[x]))
 			if i > cantVidas-1 and vidasOn[i]:
-				ventana.blit(vida, (ANCHO-43,POSVIDAS[x]))
+				ventana.blit(vida, (POS_VIDAS_HORIZONTAL[1],POS_VIDAS_VERTICAL[x]))
 			x += 1
 			i += 1
 			if x == cantVidas:
 				x = 0
-
-		#Lineas del fondo
-		#pygame.draw.line(ventana, ORANGE, (40,0), (40, ALTO), 5)  # LINEA BASE 1
-		#pygame.draw.line(ventana, ORANGE, (ANCHO-40,0), (ANCHO-40, ALTO), 5)  # LINEA BASE 2
-		#pygame.draw.line(ventana, BLACK, (ANCHO/2,0),(ANCHO/2,ALTO), 1)  # LINEA MEDIO
 
 		#dibujo la bola
 		bola.getRectangulo().left, bola.getRectangulo().top = bola.getPos()
@@ -365,8 +377,8 @@ while True:
 
 		#si perdio el jugador 1, esperare 3 segundos y mostrare un msj que gano el jugador2
 		if vivo1 == False and vivo2:
-			sonido = pygame.mixer.Sound("Music/efectos/victoria.wav")
-			sonido.play()
+			musicFondo.stop()
+			win.play()
 			score2 += 1
 			#Mido el Tiempo
 			maxTime = 3
@@ -383,8 +395,8 @@ while True:
 					maxTime -= 1  # y por cada segundo voy decrementando el tiempo maximo asignado
 		#si perdio el jugador 2, esperare 3 segundos y mostrare un msj que gano el jugador1
 		if vivo2 == False and vivo1:
-			sonido = pygame.mixer.Sound("Music/efectos/victoria.wav")
-			sonido.play()
+			musicFondo.stop()
+			win.play()
 			score1 += 1
 			#Mido el Tiempo
 			maxTime = 3
@@ -400,8 +412,8 @@ while True:
 					aux += 1  # Uso un aux para que cada ves que pasa un segundo pueda saberlo
 					maxTime -= 1  # y por cada segundo voy decrementando el tiempo maximo asignado
 		if vivo2 == False and vivo1 == False:
-			sonido = pygame.mixer.Sound("Music/efectos/draw.wav")
-			sonido.play()
+			musicFondo.stop()
+			draw.play()
 			score1 += 1
 			score2 += 1
 			#Mido el Tiempo
