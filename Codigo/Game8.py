@@ -17,6 +17,9 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 ORANGE = (241, 163, 64)
 
+#rutas
+REBOTE_TRASERO = "Music/efectos/rebote3.wav"
+REBOTE_DELANTERO = "Music/efectos/rebote6.wav"
 #jugadores
 velocidadJugador = 8
 velocidadBola = 10
@@ -74,7 +77,7 @@ FuenteArial2 = pygame.font.SysFont("Arial", 40)
 aux = 1; score1 = 0; score2 = 0 
 #bucle de fin de partida
 while True:
-	musicGame = pygame.mixer.Sound("Music/musicGame.wav")
+	musicGame = pygame.mixer.Sound("Music/fondos/musicGame.wav")
 	musicGame.play()
 
 	#POSICIONO A LOS JUGADORES Y LA BOLA 
@@ -221,13 +224,16 @@ while True:
 			
 			if (bola.getPosX() >= (jugador1.getPosX()+(jugador1.getPixels()[0]//2))):
 				direccionHorizontal = 'derecha'
-
+				reboteDelantero1 = pygame.mixer.Sound(REBOTE_DELANTERO)
+				reboteDelantero1.play()
 				if(((bola.getPosY()+(bola.getPixels()[1] // 2)) <= (jugador1.getPosY()+(jugador1.getPixels()[1]//2)))
 				and (bola.getPosY()+bola.getPixels()[1]) >= jugador1.getPosY()):
 					direccionVertical = 'subir'
 				else:
 					direccionVertical = 'bajar'
 			else:
+				reboteTrasero1 = pygame.mixer.Sound(REBOTE_TRASERO)
+				reboteTrasero1.play()
 				direccionHorizontal = 'izquierda'
 				if ((bola.getPosY()+bola.getPixels()[1]//2) <= (jugador1.getPosY()+(jugador1.getPixels()[1]//2))):
 					direccionVertical = 'subir'
@@ -241,7 +247,8 @@ while True:
 			
 			if (bola.getPosX()+bola.getPixels()[0] >= jugador2.getPosX()
 			and bola.getPosX()+bola.getPixels()[0] <= jugador2.getPosX()+(jugador2.getPixels()[0]//2)):
-
+				reboteDelantero2 = pygame.mixer.Sound(REBOTE_DELANTERO)
+				reboteDelantero2.play()
 				direccionHorizontal = 'izquierda'
 				if(((bola.getPosY()+(bola.getPixels()[1] // 2)) <= (jugador2.getPosY()+(jugador2.getPixels()[1]//2)))
 				and (bola.getPosY()+bola.getPixels()[1]) >= jugador2.getPosY()):
@@ -249,6 +256,8 @@ while True:
 				else:
 					direccionVertical = 'bajar'
 			else:
+				reboteTrasero2 = pygame.mixer.Sound(REBOTE_TRASERO)
+				reboteTrasero2.play()
 				direccionHorizontal = 'derecha'
 				if(((bola.getPosY()+(bola.getPixels()[1] // 2)) <= (jugador2.getPosY()+(jugador2.getPixels()[1]//2)))
 				and (bola.getPosY()+bola.getPixels()[1]) >= jugador2.getPosY()):
@@ -356,7 +365,7 @@ while True:
 
 		#si perdio el jugador 1, esperare 3 segundos y mostrare un msj que gano el jugador2
 		if vivo1 == False and vivo2:
-			sonido = pygame.mixer.Sound("Music/win.wav")
+			sonido = pygame.mixer.Sound("Music/efectos/victoria.wav")
 			sonido.play()
 			score2 += 1
 			#Mido el Tiempo
@@ -374,7 +383,7 @@ while True:
 					maxTime -= 1  # y por cada segundo voy decrementando el tiempo maximo asignado
 		#si perdio el jugador 2, esperare 3 segundos y mostrare un msj que gano el jugador1
 		if vivo2 == False and vivo1:
-			sonido = pygame.mixer.Sound("Music/win.wav")
+			sonido = pygame.mixer.Sound("Music/efectos/victoria.wav")
 			sonido.play()
 			score1 += 1
 			#Mido el Tiempo
@@ -391,6 +400,8 @@ while True:
 					aux += 1  # Uso un aux para que cada ves que pasa un segundo pueda saberlo
 					maxTime -= 1  # y por cada segundo voy decrementando el tiempo maximo asignado
 		if vivo2 == False and vivo1 == False:
+			sonido = pygame.mixer.Sound("Music/efectos/draw.wav")
+			sonido.play()
 			score1 += 1
 			score2 += 1
 			#Mido el Tiempo
