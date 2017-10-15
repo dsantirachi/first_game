@@ -39,27 +39,17 @@ ripVida = pygame.mixer.Sound(RIP_VIDA)
 velocidadJugador = 8
 velocidadBola = 10
 jugador1 = ImagenDinamica.ImagenDinamica("Imagenes/jugador1.png",ventana, velocidadJugador)  # ruta, display, velocidad de movimiento
-jugador1x = ImagenDinamica.ImagenDinamica("Imagenes/jugador1x.png",ventana, velocidadJugador)  # ruta, display, velocidad de movimiento
-j1Colision = ImagenDinamica.ImagenDinamica("Imagenes/j1Colision.png",ventana, velocidadJugador) 
-
 jugador2 = ImagenDinamica.ImagenDinamica("Imagenes/jugador2.png",ventana, velocidadJugador)
-j2Colision = ImagenDinamica.ImagenDinamica("Imagenes/j2Colision.png",ventana, velocidadJugador)  
-
 bola = ImagenDinamica.ImagenDinamica("Imagenes/bolaBillar.png", ventana, velocidadBola)
 fondo = pygame.image.load("Imagenes/fondo.jpg")
 
 jugador1.cambiarTamañoImg(71,150)
-jugador1x.cambiarTamañoImg(71,150)
-j1Colision.cambiarTamañoImg(71,150)
-
 jugador2.cambiarTamañoImg(71,150)
-j2Colision.cambiarTamañoImg(71,150)
-
 bola.cambiarTamañoImg(64,64)
 
-jugador1.setTopes(150, (ANCHO//2)-jugador1.getPixels()[0], 133, ALTO-jugador1.getPixels()[1]-60)  # defino los limites a los que se puede mover la imagen
-jugador1x.setTopes(150, (ANCHO//2)-jugador1.getPixels()[0], 133, ALTO-jugador1.getPixels()[1]-60)  # defino los limites a los que se puede mover la imagen
-jugador2.setTopes((ANCHO//2), ANCHO-jugador2.getPixels()[0]-150, 133, ALTO-jugador2.getPixels()[1]-60)
+
+jugador1.setTopes(80, (ANCHO//2)-jugador1.getPixels()[0], 133, ALTO-jugador1.getPixels()[1]-60)  # defino los limites a los que se puede mover la imagen
+jugador2.setTopes((ANCHO//2), ANCHO-jugador2.getPixels()[0]-80, 133, ALTO-jugador2.getPixels()[1]-60)
 bola.setTopes(83, ANCHO-bola.getPixels()[0]-83, 135, ALTO-bola.getPixels()[1]-60)
 
 #SECCION VIDAS:
@@ -114,8 +104,8 @@ while True:
 	musicFondo.play()
 
 	#POSICIONO A LOS JUGADORES Y LA BOLA 
-	jugador1.setPos(150, (ALTO//2)-(jugador1.getPixels()[0]//2))
-	jugador2.setPos(ANCHO-jugador2.getPixels()[0]-150, (ALTO-jugador2.getPixels()[0])//2)	
+	jugador1.setPos(83, (ALTO//2)-(jugador1.getPixels()[0]//2))
+	jugador2.setPos(ANCHO-jugador2.getPixels()[0]-83, (ALTO-jugador2.getPixels()[0])//2)	
 	bola.setPos((ANCHO//2)-(bola.getPixels()[0]//2), (ALTO//2)-(bola.getPixels()[1]//2))
 	
 	#POSICIONO LOS RECTANGULOS DE LOS JUGADORES Y LA BOLA
@@ -147,8 +137,7 @@ while True:
 	textoScore = FuenteArial2.render("Score", 0, (200, 60, 8))  # guardo el tiempo en un texto arial
 
 	#game loop
-	vivo1 = True; vivo2 = True; choque = 0; auxChoque = 0; colision1 = False; colision2 = False
-	bandera = True; quieto1 = True; quieto2 = True
+	vivo1 = True; vivo2 = True; choque = 0; auxChoque = 0
 	while vivo1 and vivo2:
 
 		clock.tick(60)  # declaro 60fps
@@ -192,8 +181,7 @@ while True:
 			elif elemento == K_DOWN: abajo = True; cont2+=1
 		
 		#si el jugador 1 apreto 3 o menos teclas quiere decir que se podra mover, sino no
-		if cont1<=3 and cont1>0:
-			quieto1 = False  # indico que ya no esta quieto el jugador
+		if cont1<=3:
 			if(w and s):  # si apreto arriba y abajo tengo que decidir a donde moverme:
 				for elemento in listTeclas:  # busco en la lista el elemento mas viejo y le doy preferencia al nuevo
 			 		if elemento == K_w:
@@ -218,14 +206,9 @@ while True:
 			if(s): jugador1.moverAbajo()
 			if(a): jugador1.moverIzq()
 			if(w): jugador1.moverArriba()
-		
-		#la variable quieto me sirve para saber si me estoy moviendo o no
-		if cont1 == 0:
-			quieto1 = True
 
 		#si el jugador 2 apreto 3 o menos teclas quiere decir que se podra mover, sino no
-		if cont2<=3 and cont2>0:
-			quieto2 = False
+		if cont2<=3:
 			if(arriba and abajo): 
 				for elemento in listTeclas:
 			 		if elemento == K_UP:
@@ -252,14 +235,10 @@ while True:
 			if(izquierda): jugador2.moverIzq()
 			if(arriba): jugador2.moverArriba()
 
-		#la variable quieto me sirve para saber si me estoy moviendo o no
-		if cont2 == 0:
-			quieto2 = True
-
 		#Dibujo la bola y los jugadores y los rectangulos de colision
 		
 			if maxTime>= initialTime:
-				#seguira al jugador hasta que el tiempo sea mayor a initialTime
+				#seguira al jugador hasta que el tiempo sea 87
 				bola.setPosX(jugador1.getPosX()+jugador1.getPixels()[0])
 				bola.setPosY(jugador1.getPosY()+jugador1.getPixels()[1]//4)
 			
@@ -268,7 +247,7 @@ while True:
 		#se movera en diagonal hacia su izquierda
 
 		if(bola.getRectangulo().colliderect(jugador1.getRectangulo())):
-			choque += 1; colision1 = True
+			choque += 1
 			if (bola.getPosX() >= (jugador1.getPosX()+(jugador1.getPixels()[0]//2))):
 				direccionHorizontal = 'derecha'
 				reboteDelantero.play()
@@ -289,7 +268,7 @@ while True:
 		#entonces se movera en diagonal hacia su izquierda, si choco en la zona trasera, 
 		#se movera en diagonal hacia su derecha
 		if(bola.getRectangulo().colliderect(jugador2.getRectangulo())):
-			choque += 1; colision2 = True
+			choque += 1
 			if (bola.getPosX()+bola.getPixels()[0] >= jugador2.getPosX()
 			and bola.getPosX()+bola.getPixels()[0] <= jugador2.getPosX()+(jugador2.getPixels()[0]//2)):
 				reboteDelantero.play()
@@ -373,7 +352,7 @@ while True:
 				vivo1 = False
 				vivo2 = False
 
-		#Dibujo las vidas del jugador 1 y del jugador 2 si y solo si la vida esta presente
+		#Dibujo las vidas del jugador 1 y del jugador 2
 		i = 0; x = 0
 		for vida in LstVidas:
 			if i <= cantVidas-1 and vidasOn[i]: 
@@ -390,26 +369,12 @@ while True:
 		bola.dibujarImg(*bola.getPos())
 		
 		#dibujo los jugadores
-		jugador1.getRectangulo().left, jugador1.getRectangulo().top = jugador1.getPos() 
-		#verifico si el j1 colisiono para saber que img de j1 mostrar 
-		if colision1:
-			j1Colision.dibujarImg(*jugador1.getPos())  # Dibujo la img de colision
-		elif bandera and quieto1:
-			jugador1.dibujarImg(*jugador1.getPos())  # Dibujo al jugador 1, uso un * ya que le paso una tupla
-			bandera = False
-		else:
-			jugador1x.dibujarImg(*jugador1.getPos())  # Dibujo al jugador 1, uso un * ya que le paso una tupla
-			bandera = True
-		jugador2.getRectangulo().left, jugador2.getRectangulo().top = jugador2.getPos()
-		#verifico si el j2 colisiono para saber que img de j2 mostrar 
-		if colision2:
-			j2Colision.dibujarImg(*jugador2.getPos())  # Dibujo la img colision
-		else:
-			jugador2.dibujarImg(*jugador2.getPos())  # Dibujo al jugador 2
-
-		colision2, colision1 = False, False
+		jugador1.getRectangulo().left, jugador1.getRectangulo().top = jugador1.getPos()  
+		jugador1.dibujarImg(*jugador1.getPos())  # Dibujo al jugador 1, uso un * ya que le paso una tupla
 		
-
+		jugador2.getRectangulo().left, jugador2.getRectangulo().top = jugador2.getPos()
+		jugador2.dibujarImg(*jugador2.getPos())  # Dibujo al jugador 2
+		
 		#dibujo el tiempo
 		ventana.blit(textoTime, ((ANCHO/2)-24, 45))  
 
