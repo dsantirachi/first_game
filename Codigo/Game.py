@@ -12,28 +12,22 @@ ALTO = 768
 ventana = pygame.display.set_mode((ANCHO, ALTO), pygame.FULLSCREEN)
 pygame.display.set_caption("Battle Front")
 
-#colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-ORANGE = (241, 163, 64)
-
 #Musica
-REBOTE_TRASERO = "Music/efectos/rebote5.wav" 
-REBOTE_DELANTERO = "Music/efectos/rebote2.wav" #2, 3, 5, 8
+REBOTE_TRASERO = "Music/efectos/reboteTrasero.wav" 
+REBOTE_DELANTERO = "Music/efectos/reboteDelantero.wav" #2, 3, 5, 8
 DRAW = "Music/efectos/draw.wav"
 WIN = "Music/efectos/win.wav"
 RIP_VIDA = "Music/efectos/ripVida.wav"
 MUSIC_FONDO = ("Music/fondos/fondo-ViolentPornography.wav",
 				"Music/fondos/fondo-shots.wav",
-				"Music/fondos/MusicGame.wav")
+				"Music/fondos/MusicGame.wav",
+				"Music/fondos/fondo-africa.wav")
 
 draw = pygame.mixer.Sound(DRAW)
 win = pygame.mixer.Sound(WIN)
 reboteDelantero = pygame.mixer.Sound(REBOTE_DELANTERO)
 reboteTrasero = pygame.mixer.Sound(REBOTE_TRASERO)
 ripVida = pygame.mixer.Sound(RIP_VIDA)
-
-
 
 #jugadores
 velocidadJugador = 8
@@ -100,11 +94,12 @@ FuenteArial = pygame.font.SysFont("Arial", 56)
 FuenteArial2 = pygame.font.SysFont("Arial", 40)
 
 aux = 1; score1 = 0; score2 = 0; change = -1; 
-#bucle de fin de partida
+# bucle de fin de partida, cuando termina la partida empezara nuevamente otra partida a partir
+# de este blucle
 while True:
 	# despues de cada partida la posicion change indicara la cancion a seguir
 	change += 1
-	if change == 3: # el numero 3 quiere decir que tengo 3 canciones
+	if change == 4: # el numero 3 quiere decir que tengo 3 canciones
 		change = 0
 		
 	musicFondo = pygame.mixer.Sound(MUSIC_FONDO[change])
@@ -186,8 +181,7 @@ while True:
 			elif elemento == K_DOWN: abajo = True; cont2+=1
 		
 		#si el jugador 1 apreto 3 o menos teclas quiere decir que se podra mover, sino no
-		if cont1<=3 and cont1>0:
-			quieto1 = False  # indico que ya no esta quieto el jugador
+		if cont1<=3:
 			if(w and s):  # si apreto arriba y abajo tengo que decidir a donde moverme:
 				for elemento in listTeclas:  # busco en la lista el elemento mas viejo y le doy preferencia al nuevo
 			 		if elemento == K_w:
@@ -213,13 +207,9 @@ while True:
 			if(a): jugador1.moverIzq()
 			if(w): jugador1.moverArriba()
 		
-		#la variable quieto me sirve para saber si me estoy moviendo o no
-		if cont1 == 0:
-			quieto1 = True
 
 		#si el jugador 2 apreto 3 o menos teclas quiere decir que se podra mover, sino no
-		if cont2<=3 and cont2>0:
-			quieto2 = False
+		if cont2<=3:
 			if(arriba and abajo): 
 				for elemento in listTeclas:
 			 		if elemento == K_UP:
@@ -245,10 +235,6 @@ while True:
 			if(abajo): jugador2.moverAbajo()
 			if(izquierda): jugador2.moverIzq()
 			if(arriba): jugador2.moverArriba()
-
-		#la variable quieto me sirve para saber si me estoy moviendo o no
-		if cont2 == 0:
-			quieto2 = True
 
 		#Dibujo la bola y los jugadores y los rectangulos de colision
 		
