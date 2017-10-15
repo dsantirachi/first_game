@@ -23,15 +23,14 @@ REBOTE_DELANTERO = "Music/efectos/rebote2.wav" #2, 3, 5, 8
 DRAW = "Music/efectos/draw.wav"
 WIN = "Music/efectos/win.wav"
 RIP_VIDA = "Music/efectos/ripVida.wav"
-MUSIC_FONDO1 = "Music/fondos/fondo-ViolentPornography.wav"
-MUSIC_FONDO2 = "Music/fondos/fondo-shots.wav"
-MUSIC_FONDO3 = "Music/fondos/MusicGame.wav"
+MUSIC_FONDO = ("Music/fondos/fondo-ViolentPornography.wav",
+				"Music/fondos/fondo-shots.wav",
+				"Music/fondos/MusicGame.wav")
 
 draw = pygame.mixer.Sound(DRAW)
 win = pygame.mixer.Sound(WIN)
 reboteDelantero = pygame.mixer.Sound(REBOTE_DELANTERO)
 reboteTrasero = pygame.mixer.Sound(REBOTE_TRASERO)
-musicFondo = pygame.mixer.Sound(MUSIC_FONDO1)
 ripVida = pygame.mixer.Sound(RIP_VIDA)
 
 
@@ -54,9 +53,11 @@ jugador2.setTopes((ANCHO//2), ANCHO-jugador2.getPixels()[0]-80, 133, ALTO-jugado
 bola.setTopes(83, ANCHO-bola.getPixels()[0]-83, 135, ALTO-bola.getPixels()[1]-60)
 
 #SECCION VIDAS:
+pixelsVida = 50
+cantVidas = 6
 #creo 12 objetos o imagenes de vidas
 LstVidas = []
-for i in range(12):
+for i in range(cantVidas*2):
 	LstVidas.append(pygame.image.load("Imagenes/vida.png"))
 
 #Obtengo los rectangulos de cada imagen de la vida, esto me sirve para las colisiones
@@ -67,18 +68,15 @@ for img in LstVidas:
 	x += 1
 
 #POS_VIDAS ME SIRVE PARA ALINEAR LAS VIDAS EN LA PANTALLA DE FORMA HORIZONTAL y VERTICAL(x;y)
-pixelsVida = 50
-cantVidas = 6
 zonaSuperior = 120
 zonaInferior = 50
 zona_juego = ALTO-zonaSuperior-zonaInferior  #esos numeros dependen del fondo que le ponga
 espacioBlanco = (zona_juego - (pixelsVida*cantVidas)) // (cantVidas+1)
-POS_VIDAS_VERTICAL = (zonaSuperior + espacioBlanco,
-			(zonaSuperior + (espacioBlanco*2))+pixelsVida,
-			(zonaSuperior + (espacioBlanco*3))+(pixelsVida*2),
-			(zonaSuperior + (espacioBlanco*4))+(pixelsVida*3),
-			(zonaSuperior + (espacioBlanco*5))+(pixelsVida*4),
-			(zonaSuperior + (espacioBlanco*6))+(pixelsVida*5))
+
+POS_VIDAS_VERTICAL = []
+for x in range(cantVidas):
+	POS_VIDAS_VERTICAL.append(zonaSuperior + (espacioBlanco * (x + 1)) + (pixelsVida * x))
+
 POS_VIDAS_HORIZONTAL = (85, ANCHO-135)
 
 #CREO UNA LISTA PARA GUARDAR EL RECTANGULO DE CADA IMG DE LA VIDA 
@@ -94,9 +92,15 @@ for x in range(cantVidas):
 FuenteArial = pygame.font.SysFont("Arial", 56)
 FuenteArial2 = pygame.font.SysFont("Arial", 40)
 
-aux = 1; score1 = 0; score2 = 0 
+aux = 1; score1 = 0; score2 = 0; change = -1; 
 #bucle de fin de partida
 while True:
+	# despues de cada partida la posicion change indicara la cancion a seguir
+	change += 1
+	if change == 3: # el numero 3 quiere decir que tengo 3 canciones
+		change = 0
+		
+	musicFondo = pygame.mixer.Sound(MUSIC_FONDO[change])
 	musicFondo.play()
 
 	#POSICIONO A LOS JUGADORES Y LA BOLA 
@@ -109,8 +113,11 @@ while True:
 	jugador1.getRectangulo().left, jugador1.getRectangulo().top = jugador1.getPos()
 	jugador2.getRectangulo().left, jugador2.getRectangulo().top = jugador2.getPos()
 
-	#ME SIVE PARA VERIFICAR SI LAS VIDAS SIGUEN EN JUEGO O NO
-	vidasOn = [True, True, True, True, True, True, True, True, True, True, True, True]
+	bola.setVelocidad(velocidadBola)  # reseteo la velocidad de la bola
+	#ME SIRVE PARA VERIFICAR SI LAS VIDAS SIGUEN EN JUEGO O NO
+	vidasOn = []
+	for x in range(cantVidas*2):
+		vidasOn.append(True)
 
 	#otros
 
@@ -130,7 +137,7 @@ while True:
 	textoScore = FuenteArial2.render("Score", 0, (200, 60, 8))  # guardo el tiempo en un texto arial
 
 	#game loop
-	vivo1 = True; vivo2 = True
+	vivo1 = True; vivo2 = True; choque = 0; auxChoque = 0
 	while vivo1 and vivo2:
 
 		clock.tick(60)  # declaro 60fps
@@ -240,7 +247,7 @@ while True:
 		#se movera en diagonal hacia su izquierda
 
 		if(bola.getRectangulo().colliderect(jugador1.getRectangulo())):
-			
+			choque += 1
 			if (bola.getPosX() >= (jugador1.getPosX()+(jugador1.getPixels()[0]//2))):
 				direccionHorizontal = 'derecha'
 				reboteDelantero.play()
@@ -261,7 +268,7 @@ while True:
 		#entonces se movera en diagonal hacia su izquierda, si choco en la zona trasera, 
 		#se movera en diagonal hacia su derecha
 		if(bola.getRectangulo().colliderect(jugador2.getRectangulo())):
-			
+			choque += 1
 			if (bola.getPosX()+bola.getPixels()[0] >= jugador2.getPosX()
 			and bola.getPosX()+bola.getPixels()[0] <= jugador2.getPosX()+(jugador2.getPixels()[0]//2)):
 				reboteDelantero.play()
@@ -282,15 +289,21 @@ while True:
 		
 		if bola.getPosY() <= bola.getTopeSuperior():
 			direccionVertical = 'bajar'
-			
+		
 		if bola.getPosY() >= bola.getTopeInferior():
 			direccionVertical = 'subir'
 
 		if bola.getPosX()>= bola.getTopeDerecho():
 			direccionHorizontal = 'izquierda'
+			#si la bola toco algun tope izquierdo o derecho, reseteo la velocidad a la inicial
+			bola.setVelocidad(velocidadBola)
+			choque = 0; auxChoque = 0
 
 		if bola.getPosX() <= bola.getTopeIzquierdo():
 			direccionHorizontal = 'derecha'
+			#si la bola toco algun tope izquierdo o derecho, reseteo la velocidad a la inicial
+			bola.setVelocidad(velocidadBola)
+			choque = 0; auxChoque = 0
 
 		if direccionHorizontal == 'derecha' and direccionVertical == 'bajar':
 			bola.moverInfDerecho()
@@ -301,6 +314,11 @@ while True:
 		elif direccionHorizontal == 'izquierda' and direccionVertical == 'subir':
 			bola.moverSupIzquierdo()
 		
+
+		#Cuantos mas choques haga la bola con algun jugador, mas rapido ira la bola
+		if choque != auxChoque:
+			bola.setVelocidad(bola.getVelocidad()+ 0.1)
+			auxChoque = choque
 
 		#Dibujo el fondo
 		ventana.blit(fondo, (0,0))  # Dibujo el fondo
