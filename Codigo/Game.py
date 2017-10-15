@@ -39,7 +39,6 @@ ripVida = pygame.mixer.Sound(RIP_VIDA)
 velocidadJugador = 8
 velocidadBola = 10
 jugador1 = ImagenDinamica.ImagenDinamica("Imagenes/jugador1.png",ventana, velocidadJugador)  # ruta, display, velocidad de movimiento
-jugador1x = ImagenDinamica.ImagenDinamica("Imagenes/jugador1x.png",ventana, velocidadJugador)  # ruta, display, velocidad de movimiento
 j1Colision = ImagenDinamica.ImagenDinamica("Imagenes/j1Colision.png",ventana, velocidadJugador) 
 
 jugador2 = ImagenDinamica.ImagenDinamica("Imagenes/jugador2.png",ventana, velocidadJugador)
@@ -49,7 +48,6 @@ bola = ImagenDinamica.ImagenDinamica("Imagenes/bolaBillar.png", ventana, velocid
 fondo = pygame.image.load("Imagenes/fondo.jpg")
 
 jugador1.cambiarTamañoImg(71,150)
-jugador1x.cambiarTamañoImg(71,150)
 j1Colision.cambiarTamañoImg(71,150)
 
 jugador2.cambiarTamañoImg(71,150)
@@ -58,7 +56,6 @@ j2Colision.cambiarTamañoImg(71,150)
 bola.cambiarTamañoImg(64,64)
 
 jugador1.setTopes(150, (ANCHO//2)-jugador1.getPixels()[0], 133, ALTO-jugador1.getPixels()[1]-60)  # defino los limites a los que se puede mover la imagen
-jugador1x.setTopes(150, (ANCHO//2)-jugador1.getPixels()[0], 133, ALTO-jugador1.getPixels()[1]-60)  # defino los limites a los que se puede mover la imagen
 jugador2.setTopes((ANCHO//2), ANCHO-jugador2.getPixels()[0]-150, 133, ALTO-jugador2.getPixels()[1]-60)
 bola.setTopes(83, ANCHO-bola.getPixels()[0]-83, 135, ALTO-bola.getPixels()[1]-60)
 
@@ -148,7 +145,6 @@ while True:
 
 	#game loop
 	vivo1 = True; vivo2 = True; choque = 0; auxChoque = 0; colision1 = False; colision2 = False
-	bandera = True; quieto1 = True; quieto2 = True
 	while vivo1 and vivo2:
 
 		clock.tick(60)  # declaro 60fps
@@ -162,7 +158,6 @@ while True:
 		
 		#Verifico si hay eventos(QUIT, apretar y soltar teclas) y hago algo
 		for evento in pygame.event.get():  # Hay un evento?
-			print(evento)
 			if evento.type == QUIT:  # El evento es QUIT?
 				pygame.quit()  
 				sys.exit()
@@ -178,7 +173,6 @@ while True:
 		#Mover jugadores
 		w, a, s, d, arriba, abajo, izquierda, derecha = False, False, False, False, False, False, False, False
 		cont1, cont2 = 0, 0
-		bloqueado1, bloqueado2 = False, False
 		#verifico cuantas teclas y cuales teclas hay en la lista pulsadas por cada jugador
 		for elemento in listTeclas:
 			if(elemento == K_ESCAPE): pygame.quit() ;sys.exit()
@@ -394,12 +388,9 @@ while True:
 		#verifico si el j1 colisiono para saber que img de j1 mostrar 
 		if colision1:
 			j1Colision.dibujarImg(*jugador1.getPos())  # Dibujo la img de colision
-		elif bandera and quieto1:
-			jugador1.dibujarImg(*jugador1.getPos())  # Dibujo al jugador 1, uso un * ya que le paso una tupla
-			bandera = False
 		else:
-			jugador1x.dibujarImg(*jugador1.getPos())  # Dibujo al jugador 1, uso un * ya que le paso una tupla
-			bandera = True
+			jugador1.dibujarImg(*jugador1.getPos())  # Dibujo al jugador 1, uso un * ya que le paso una tupla
+			
 		jugador2.getRectangulo().left, jugador2.getRectangulo().top = jugador2.getPos()
 		#verifico si el j2 colisiono para saber que img de j2 mostrar 
 		if colision2:
