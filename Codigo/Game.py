@@ -29,14 +29,17 @@ reboteDelantero = pygame.mixer.Sound(REBOTE_DELANTERO)
 reboteTrasero = pygame.mixer.Sound(REBOTE_TRASERO)
 ripVida = pygame.mixer.Sound(RIP_VIDA)
 
-#Fuentes y textos
-FuenteArial = pygame.font.SysFont("Arial", 56)
-FuenteArial2 = pygame.font.SysFont("Arial", 40)
-textStart = FuenteArial2.render('Start', 0, (200, 60, 8))  
-textExit = FuenteArial2.render('Exit', 0, (200, 60, 8))  
-
 #colors:
 WHITE = (255,255,255)
+ORANGE = (200, 60, 8)
+
+#Fuentes y textos
+pixelFuenteY = 56 
+FuenteArial = pygame.font.SysFont("Arial", pixelFuenteY)
+FuenteArial2 = pygame.font.SysFont("Arial", 40)
+textStart = FuenteArial.render('Start', 0, ORANGE)
+textScores = FuenteArial.render('Scores', 0, ORANGE)
+textExit = FuenteArial.render('Exit', 0, ORANGE)
 
 #Zona de menu
 while True:
@@ -47,16 +50,12 @@ while True:
 				if evento.key == K_ESCAPE:
 					pygame.quit()  
 					sys.exit()	
-	ventana.blit(textStart, (70, 45))  
-	ventana.blit(textExit, ((ANCHO-240), 45))  				
+	ventana.blit(textStart, ((ANCHO // 2)-50, (ALTO // 2) + 65))
+	ventana.blit(textScores, ((ANCHO // 2)-73, (ALTO // 2) + 130))  
+	ventana.blit(textExit, ((ANCHO // 2)-40, (ALTO // 2) + 195))  				
+				
 	pygame.display.update()
 
-"""
-		ventana.blit(textoScore, (70, 45))  
-		ventana.blit(textoScore, ((ANCHO-240), 45))  
-		ventana.blit(textoScore1, (220, 45))  # imprimo el score1
-		ventana.blit(textoScore2, ((ANCHO-100), 45))  # imprimo el score2
-"""
 #jugadores
 velocidadJugador = 8
 velocidadBola = 10
@@ -416,8 +415,8 @@ while True:
 		ventana.blit(textoTime, ((ANCHO/2)-24, 45))  
 
 		#dibujo los scores
-		textoScore1 = FuenteArial2.render(str(score1), 0, (200, 60, 8))  
-		textoScore2 = FuenteArial2.render(str(score2), 0, (200, 60, 8))  
+		textoScore1 = FuenteArial2.render(str(score1), 0, ORANGE)  
+		textoScore2 = FuenteArial2.render(str(score2), 0, ORANGE)  
 		ventana.blit(textoScore, (70, 45))  
 		ventana.blit(textoScore, ((ANCHO-240), 45))  
 		ventana.blit(textoScore1, (220, 45))  # imprimo el score1
