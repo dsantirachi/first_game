@@ -29,6 +29,19 @@ reboteDelantero = pygame.mixer.Sound(REBOTE_DELANTERO)
 reboteTrasero = pygame.mixer.Sound(REBOTE_TRASERO)
 ripVida = pygame.mixer.Sound(RIP_VIDA)
 
+#colors:
+WHITE = (255,255,255)
+#Zona de menu
+
+while True:
+	ventana.fill(WHITE)
+	for evento in pygame.event.get():  # Hay un evento?
+			#if evento.type == KEYUP:  # El evento es KEYUP? y hay algo en la lista? 
+			if evento.type == KEYDOWN:  # El evento es KEYDOWN?
+				if evento.key == K_ESCAPE:
+					pygame.quit()  
+					sys.exit()					
+	pygame.display.update()
 #jugadores
 velocidadJugador = 8
 velocidadBola = 10
