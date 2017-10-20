@@ -29,10 +29,16 @@ reboteDelantero = pygame.mixer.Sound(REBOTE_DELANTERO)
 reboteTrasero = pygame.mixer.Sound(REBOTE_TRASERO)
 ripVida = pygame.mixer.Sound(RIP_VIDA)
 
+#Fuentes y textos
+FuenteArial = pygame.font.SysFont("Arial", 56)
+FuenteArial2 = pygame.font.SysFont("Arial", 40)
+textStart = FuenteArial2.render('Start', 0, (200, 60, 8))  
+textExit = FuenteArial2.render('Exit', 0, (200, 60, 8))  
+
 #colors:
 WHITE = (255,255,255)
-#Zona de menu
 
+#Zona de menu
 while True:
 	ventana.fill(WHITE)
 	for evento in pygame.event.get():  # Hay un evento?
@@ -40,8 +46,17 @@ while True:
 			if evento.type == KEYDOWN:  # El evento es KEYDOWN?
 				if evento.key == K_ESCAPE:
 					pygame.quit()  
-					sys.exit()					
+					sys.exit()	
+	ventana.blit(textStart, (70, 45))  
+	ventana.blit(textExit, ((ANCHO-240), 45))  				
 	pygame.display.update()
+
+"""
+		ventana.blit(textoScore, (70, 45))  
+		ventana.blit(textoScore, ((ANCHO-240), 45))  
+		ventana.blit(textoScore1, (220, 45))  # imprimo el score1
+		ventana.blit(textoScore2, ((ANCHO-100), 45))  # imprimo el score2
+"""
 #jugadores
 velocidadJugador = 8
 velocidadBola = 10
@@ -102,9 +117,6 @@ i = cantVidas
 for x in range(cantVidas):
 	LstRectVidas[i].left, LstRectVidas[i].top = POS_VIDAS_HORIZONTAL[1], POS_VIDAS_VERTICAL[x]
 	i += 1
-
-FuenteArial = pygame.font.SysFont("Arial", 56)
-FuenteArial2 = pygame.font.SysFont("Arial", 40)
 
 aux = 1; score1 = 0; score2 = 0; change = -1; 
 # bucle de fin de partida, cuando termina la partida empezara nuevamente otra partida a partir
