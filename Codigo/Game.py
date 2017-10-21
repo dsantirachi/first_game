@@ -11,6 +11,7 @@ ANCHO = 1366
 ALTO = 768
 ventana = pygame.display.set_mode((ANCHO, ALTO), pygame.FULLSCREEN)
 pygame.display.set_caption("Battle Front")
+fondoMenu = pygame.image.load("Imagenes/fondoMenu.jpg")
 
 #Musica
 REBOTE_TRASERO = "Music/efectos/reboteTrasero.wav" 
@@ -33,6 +34,7 @@ ripVida = pygame.mixer.Sound(RIP_VIDA)
 WHITE = (255, 255, 255)
 ORANGE = (200, 60, 8)
 GREEN = (00, 255, 00)
+
 #Fuentes y textos
 pixelFuenteY = 56 
 FuenteArial = pygame.font.SysFont("Arial", pixelFuenteY)
@@ -56,15 +58,13 @@ textos = ((textStartOrange, textScoresOrange, textExitOrange),
 [0,0][0,1][0,2]
 [1,0][1,1][1,2]
 """
-
-
-posTexto = (((ANCHO // 2)-50, (ALTO // 2) + 65),
-	((ANCHO // 2)-73, (ALTO // 2) + 130),
-	((ANCHO // 2)-40, (ALTO // 2) + 195))
+posTexto = (((ANCHO // 2)-50, (ALTO // 2) + 105),
+	((ANCHO // 2)-73, (ALTO // 2) + 170),
+	((ANCHO // 2)-40, (ALTO // 2) + 235))
 
 seleccionado = 0  # marco cual va a ser el boton de menu actualmente seleccionado
 while seleccionado != -1:
-	ventana.fill(WHITE)
+	ventana.blit(fondoMenu, (0,0))
 	#seccion seleccionar menu	
 	for x in range(len(posTexto)):
 		if x == seleccionado:
