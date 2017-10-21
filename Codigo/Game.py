@@ -460,8 +460,8 @@ if seleccionado == 0:
 			textoScore1 = FuenteArial2.render(str(score1), 0, ORANGE)  
 			textoScore2 = FuenteArial2.render(str(score2), 0, ORANGE)   
 			#dibujo los scores
-			ventana.blit(textoScore1, (290, 60))  # imprimo el score1
-			ventana.blit(textoScore2, ((ANCHO-95), 60))  # imprimo el score2
+			ventana.blit(textoScore1, (170, 60))  # imprimo el score1
+			ventana.blit(textoScore2, ((ANCHO-170), 60))  # imprimo el score2
 
 			#pygame.draw.rect(ventana, ORANGE, bola.getRectangulo())
 			#pygame.draw.rect(ventana, ORANGE, jugador1.getRectangulo())
