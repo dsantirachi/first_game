@@ -119,7 +119,7 @@ if seleccionado == 0:
 
 	jugador1.setTopes(150, (ANCHO//2)-jugador1.getPixels()[0], 133, ALTO-jugador1.getPixels()[1]-60)  # defino los limites a los que se puede mover la imagen
 	jugador2.setTopes((ANCHO//2), ANCHO-jugador2.getPixels()[0]-150, 133, ALTO-jugador2.getPixels()[1]-60)
-	bola.setTopes(83, ANCHO-bola.getPixels()[0]-83, 135, ALTO-bola.getPixels()[1]-60)
+	bola.setTopes(40, ANCHO-bola.getPixels()[0]-40, 135, ALTO-bola.getPixels()[1]-60)
 
 	#SECCION VIDAS:
 	pixelsVida = 50
@@ -146,7 +146,7 @@ if seleccionado == 0:
 	for x in range(cantVidas):
 		POS_VIDAS_VERTICAL.append(zonaSuperior + (espacioBlanco * (x + 1)) + (pixelsVida * x))
 
-	POS_VIDAS_HORIZONTAL = (85, ANCHO-135)
+	POS_VIDAS_HORIZONTAL = (57, ANCHO-105)
 
 	#CREO UNA LISTA PARA GUARDAR EL RECTANGULO DE CADA IMG DE LA VIDA 
 	for x in range(cantVidas):
@@ -203,9 +203,6 @@ if seleccionado == 0:
 		aux = int(pygame.time.get_ticks()/1000)  
 		# guardo el tiempo en un aux, esto me sirve para que cuando comienze la partida sepa cuanto
 		# tiempo paso desde que inicio la pantalla de la aplicacion y de ahi poder medir tiempo.
-
-		#Score
-		textoScore = FuenteArial2.render("Score", 0, (200, 60, 8))  # guardo el tiempo en un texto arial
 
 		#game loop
 		vivo1 = True; vivo2 = True; choque = 0; auxChoque = 0; colision1 = False; colision2 = False
@@ -457,15 +454,14 @@ if seleccionado == 0:
 			
 
 			#dibujo el tiempo
-			ventana.blit(textoTime, ((ANCHO/2)-24, 45))  
+			ventana.blit(textoTime, ((ANCHO/2)-24, 55))  
 
-			#dibujo los scores
+			#genero los scores
 			textoScore1 = FuenteArial2.render(str(score1), 0, ORANGE)  
-			textoScore2 = FuenteArial2.render(str(score2), 0, ORANGE)  
-			ventana.blit(textoScore, (70, 45))  
-			ventana.blit(textoScore, ((ANCHO-240), 45))  
-			ventana.blit(textoScore1, (220, 45))  # imprimo el score1
-			ventana.blit(textoScore2, ((ANCHO-100), 45))  # imprimo el score2
+			textoScore2 = FuenteArial2.render(str(score2), 0, ORANGE)   
+			#dibujo los scores
+			ventana.blit(textoScore1, (290, 60))  # imprimo el score1
+			ventana.blit(textoScore2, ((ANCHO-95), 60))  # imprimo el score2
 
 			#pygame.draw.rect(ventana, ORANGE, bola.getRectangulo())
 			#pygame.draw.rect(ventana, ORANGE, jugador1.getRectangulo())
