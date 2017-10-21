@@ -32,36 +32,67 @@ ripVida = pygame.mixer.Sound(RIP_VIDA)
 #colors:
 WHITE = (255, 255, 255)
 ORANGE = (200, 60, 8)
-VERDE = (00, 255, 00)
+GREEN = (00, 255, 00)
 #Fuentes y textos
 pixelFuenteY = 56 
 FuenteArial = pygame.font.SysFont("Arial", pixelFuenteY)
 FuenteArial2 = pygame.font.SysFont("Arial", 40)
-textStart = FuenteArial.render('Start', 0, ORANGE)
-textStart = FuenteArial.render('Start', 0, VERDE)
 
-textScores = FuenteArial.render('Scores', 0, ORANGE)
-textScores = FuenteArial.render('Scores', 0, VERDE)
+textStartOrange = FuenteArial.render('Start', 0, ORANGE)
+textStartGreen = FuenteArial.render('Start', 0, GREEN)
 
-textExit = FuenteArial.render('Exit', 0, ORANGE)
-textExit = FuenteArial.render('Exit', 0, VERDE)
+textScoresOrange = FuenteArial.render('Scores', 0, ORANGE)
+textScoresGreen = FuenteArial.render('Scores', 0, GREEN)
+
+textExitOrange = FuenteArial.render('Exit', 0, ORANGE)
+textExitGreen = FuenteArial.render('Exit', 0, GREEN)
 
 
 #Zona de menu
 #0-Start, 1-Scores, 2-Exit
+textos = ((textStartOrange, textScoresOrange, textExitOrange),
+	(textStartGreen, textScoresGreen, textExitGreen))
+"""Matriz de Texto
+[0,0][0,1][0,2]
+[1,0][1,1][1,2]
+"""
+
+
+posTexto = (((ANCHO // 2)-50, (ALTO // 2) + 65),
+	((ANCHO // 2)-73, (ALTO // 2) + 130),
+	((ANCHO // 2)-40, (ALTO // 2) + 195))
+
 seleccionado = 0  # marco cual va a ser el boton de menu actualmente seleccionado
-while True:
+while seleccionado != -1:
 	ventana.fill(WHITE)
+	#seccion seleccionar menu	
+	for x in range(len(posTexto)):
+		if x == seleccionado:
+			ventana.blit(textos[1][x], posTexto[x])  # dibujoel texto de menu en verde
+		else:
+			ventana.blit(textos[0][x], posTexto[x])  # dibujo el texto de menu en naranja
+
 	for evento in pygame.event.get():  # Hay un evento?
-			#if evento.type == KEYUP:  # El evento es KEYUP? y hay algo en la lista? 
-			if evento.type == KEYDOWN:  # El evento es KEYDOWN?
+			if evento.type == KEYDOWN:
 				if evento.key == K_ESCAPE:
 					pygame.quit()  
-					sys.exit()	
-	ventana.blit(textStart, ((ANCHO // 2)-50, (ALTO // 2) + 65))
-	ventana.blit(textScores, ((ANCHO // 2)-73, (ALTO // 2) + 130))  
-	ventana.blit(textExit, ((ANCHO // 2)-40, (ALTO // 2) + 195))  				
-				
+					sys.exit()
+
+				if evento.key == K_DOWN:
+					# muevo el menu seleccionado, si llego al final del menu, reseteo y vuelvo al principio
+					if seleccionado == len(posTexto)-1:
+						seleccionado = 0
+					else:
+						seleccionado += 1
+
+				if evento.key == K_UP:
+					# muevo el menu seleccionado, si llego al principio del menu, reseteo y vuelvo al final
+					if seleccionado == 0:
+						seleccionado = len(posTexto)-1
+					else:
+						seleccionado -= 1
+				if evento.key == 13:  # 13 equivale a apretar ENTER
+					seleccionado = -1
 	pygame.display.update()
 
 #jugadores
