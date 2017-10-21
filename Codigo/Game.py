@@ -30,18 +30,26 @@ reboteTrasero = pygame.mixer.Sound(REBOTE_TRASERO)
 ripVida = pygame.mixer.Sound(RIP_VIDA)
 
 #colors:
-WHITE = (255,255,255)
+WHITE = (255, 255, 255)
 ORANGE = (200, 60, 8)
-
+VERDE = (00, 255, 00)
 #Fuentes y textos
 pixelFuenteY = 56 
 FuenteArial = pygame.font.SysFont("Arial", pixelFuenteY)
 FuenteArial2 = pygame.font.SysFont("Arial", 40)
 textStart = FuenteArial.render('Start', 0, ORANGE)
+textStart = FuenteArial.render('Start', 0, VERDE)
+
 textScores = FuenteArial.render('Scores', 0, ORANGE)
+textScores = FuenteArial.render('Scores', 0, VERDE)
+
 textExit = FuenteArial.render('Exit', 0, ORANGE)
+textExit = FuenteArial.render('Exit', 0, VERDE)
+
 
 #Zona de menu
+#0-Start, 1-Scores, 2-Exit
+seleccionado = 0  # marco cual va a ser el boton de menu actualmente seleccionado
 while True:
 	ventana.fill(WHITE)
 	for evento in pygame.event.get():  # Hay un evento?
