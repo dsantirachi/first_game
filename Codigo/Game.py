@@ -117,8 +117,8 @@ if seleccionado == 0:
 
 	bola.cambiarTamañoImg(64,64)
 
-	jugador1.setTopes(150, (ANCHO//2)-jugador1.getPixels()[0], 133, ALTO-jugador1.getPixels()[1]-60)  # defino los limites a los que se puede mover la imagen
-	jugador2.setTopes((ANCHO//2), ANCHO-jugador2.getPixels()[0]-150, 133, ALTO-jugador2.getPixels()[1]-60)
+	jugador1.setTopes(130, (ANCHO//2)-jugador1.getPixels()[0], 133, ALTO-jugador1.getPixels()[1]-60)  # defino los limites a los que se puede mover la imagen
+	jugador2.setTopes((ANCHO//2), ANCHO-jugador2.getPixels()[0]-130, 133, ALTO-jugador2.getPixels()[1]-60)
 	bola.setTopes(40, ANCHO-bola.getPixels()[0]-40, 135, ALTO-bola.getPixels()[1]-60)
 
 	#SECCION VIDAS:
