@@ -28,7 +28,7 @@ class ImagenDinamica(pygame.sprite.Sprite):
     def dibujarImg(self, posX, posY):
         self.ventana.blit(self.img, (posX, posY))  # dibujo la imagen en la ventana
 
-    def cambiarTamañoImg(self, pixelsX, pixelsY):
+    def cambiarTamanioImg(self, pixelsX, pixelsY):
         self.img = pygame.transform.scale(self.img, (pixelsX, pixelsY))
         self.pixels = (pixelsX, pixelsY)
         self.rectangulo = self.img.get_rect()

@@ -1,0 +1,10 @@
+damian 1 
+jony 2
+nawan 1
+martin 2
+jony 2
+nawan 1
+martin 2
+jony 2
+nawan 1
+martin 2
