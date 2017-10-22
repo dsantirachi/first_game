@@ -238,7 +238,7 @@ while not salir1:
 				cont1, cont2 = 0, 0
 				#verifico cuantas teclas y cuales teclas hay en la lista pulsadas por cada jugador
 				for elemento in listTeclas:
-					if elemento == K_ESCAPE: salirJugar = True; salirMenuInicial = False
+					if elemento == K_ESCAPE: salirJugar = True; salirMenuInicial = False; musicFondo.stop()
 					elif elemento == K_w: w = True; cont1+=1  # aumento el contador de teclas apretadas del jugador 1
 					elif elemento == K_s: s = True; cont1+=1
 					elif elemento == K_a: a = True; cont1+=1
@@ -528,20 +528,34 @@ while not salir1:
 							maxTime -= 1  # y por cada segundo voy decrementando el tiempo maximo asignado
 
 	elif seleccionado == 1: # PARTE DEL MENU "SECCION SCORES"
-		eof = False; menuScores = True; sumaPosTexto = 0 
+		eof = False; menuScores = True; sumaPosTexto = 80; top = 10; cont = 0
 		ventana.fill(WHITE)
 		punteroScores = open(fileScores, "r")
+
+		textoTitulo = FuenteArial2.render('BEST RANKING', 0, ORANGE)
+		textoSubtitulo = FuenteArial2.render('RANK  NOMBRE  SCORE', 0, ORANGE) 
+
+		ventana.blit(textoTitulo, ((ANCHO//2)-90,20))
+		ventana.blit(textoSubtitulo, ((ANCHO//2)-150,100))
+
 		while menuScores:  # mientras no aprete ESC no saldre del menu de Scores
 			while not eof:  # estare en el while hasta que halla recorrido todo el archivo
-				cadena = punteroScores.read()
-				jugadorScore = FuenteArial2.render(str(cadena), 0, ORANGE) 
-				sumaPosTexto += 50 
-				print (sumaPosTexto)
-				print(cadena)
-				ventana.blit(jugadorScore, (ANCHO//2, 50+sumaPosTexto))
-				if cadena == '':
+				#cadena = punteroScores.read()
+				cont += 1
+				linea = punteroScores.readline()
+				textoJugScore = FuenteArial2.render(str(linea), 0, ORANGE) 
+				textoRank = FuenteArial2.render(str(cont), 0, ORANGE)
+
+				sumaPosTexto += 50 # me sirve para posicionar el texto
+
+				ventana.blit(textoJugScore, ((ANCHO//2)-150, 50+sumaPosTexto))
+				ventana.blit(textoRank, ((ANCHO//2)-180, 50+sumaPosTexto))
+
+				if linea == '':
 					punteroScores.close()
 					eof = True
+
+
 			for evento in pygame.event.get():  # Hay un evento?
 				if evento.type == KEYDOWN:
 					if evento.key == K_ESCAPE:
