@@ -533,14 +533,16 @@ while not salir1:
 		punteroScores = open(fileScores, "r")
 
 		textoTitulo = FuenteArial2.render('BEST RANKING', 0, ORANGE)
-		textoSubtitulo = FuenteArial2.render('RANK  NOMBRE  SCORE', 0, ORANGE) 
+		textoSubtitulo = FuenteArial2.render('RANK    NOMBRE    SCORE', 0, ORANGE) 
 
 		ventana.blit(textoTitulo, ((ANCHO//2)-90,20))
-		ventana.blit(textoSubtitulo, ((ANCHO//2)-150,100))
+		ventana.blit(textoSubtitulo, ((ANCHO//2)-190,100))
 
 		while menuScores:  # mientras no aprete ESC no saldre del menu de Scores
 			while not eof:  # estare en el while hasta que halla recorrido todo el archivo
 				#cadena = punteroScores.read()
+				if cont == top-1:  
+					eof = True 
 				cont += 1
 				linea = punteroScores.readline()
 				textoJugScore = FuenteArial2.render(str(linea), 0, ORANGE) 

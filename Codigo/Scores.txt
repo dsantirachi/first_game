@@ -1,10 +1,10 @@
-damian 1 
-jony 2
-nawan 1
-martin 2
-jony 2
-nawan 1
-martin 2
-jony 2
-nawan 1
-martin 2
+         damian               1 
+         jony                 2
+         nawan                1
+         martin               3
+         jose                 4
+         nico                 5
+         pablo                0
+         damian               1 
+         jony                 2
+         nawan                1
