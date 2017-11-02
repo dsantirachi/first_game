@@ -168,7 +168,7 @@ while not salir1:
 		while not salirJugar:
 			# despues de cada partida la posicion change indicara la cancion a seguir
 			change += 1
-			if change == 4: # el numero 3 quiere decir que tengo 3 canciones
+			if change == 5: # el numero 5 quiere decir que tengo 5 canciones
 				change = 0
 				
 			musicFondo = pygame.mixer.Sound(MUSIC_FONDO[change])
