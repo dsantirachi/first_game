@@ -15,15 +15,14 @@ fondoMenu = pygame.image.load("Imagenes/fondoMenu.jpg")
 
 #Musica
 REBOTE_TRASERO = "Music/efectos/reboteTrasero.wav" 
-REBOTE_DELANTERO = "Music/efectos/reboteDelantero.wav"
+REBOTE_DELANTERO = "Music/efectos/reboteDelantero.wav" #2, 3, 5, 8
 DRAW = "Music/efectos/draw.wav"
 WIN = "Music/efectos/win.wav"
 RIP_VIDA = "Music/efectos/ripVida.wav"
-MUSIC_FONDO = (	"Music/fondos/fondo-ViolentPornography.wav",
+MUSIC_FONDO = ("Music/fondos/fondo-ViolentPornography.wav",
 				"Music/fondos/fondo-shots.wav",
 				"Music/fondos/MusicGame.wav",
-				"Music/fondos/fondo-africa.wav",
-				"Music/fondos/fondo-the_fox.wav")
+				"Music/fondos/fondo-africa.wav")
 
 draw = pygame.mixer.Sound(DRAW)
 win = pygame.mixer.Sound(WIN)
