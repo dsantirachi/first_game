@@ -51,7 +51,8 @@ textExitOrange = FuenteArial.render('Exit', 0, ORANGE)
 textExitGreen = FuenteArial.render('Exit', 0, GREEN)
 
 #Archivo de texto
-fileScores = 'Scores.txt'
+fileScores = 'Scores.txt' # nombre del archivo principal para guardar los scores
+fileScores2 = 'Scores2.txt' # nombre del archivo auxiliar para hacer operaciones
 #Zona de menu
 #0-Start, 1-Scores, 2-Exit
 textos = ((textStartOrange, textScoresOrange, textExitOrange),
@@ -202,9 +203,9 @@ while not salir1:
 			direccionHorizontal = 'derecha'
 			direccionVertical = 'subir'
 			#Variables para medir tiempo
-			maxTime = 91
+			maxTime = 10
 			initialTime = 88
-			aux = int(pygame.time.get_ticks()/1000)  
+			aux = int(pygame.time.get_ticks()/1000) + 1
 			# guardo el tiempo en un aux, esto me sirve para que cuando comienze la partida sepa cuanto
 			# tiempo paso desde que inicio la pantalla de la aplicacion y de ahi poder medir tiempo.
 			#game loop
@@ -390,9 +391,6 @@ while not salir1:
 					bola.setVelocidad(bola.getVelocidad()+ 0.1)
 					auxChoque = choque
 
-				#Dibujo el fondo
-				ventana.blit(fondo, (0,0))  # Dibujo el fondo
-
 				#Verifico si hubo colisiones en alguna vida
 				# y pongo la posicion de la vida en False si es que hubo alguna colision
 				for x in range(cantVidas*2):
@@ -421,6 +419,9 @@ while not salir1:
 					elif cont1 == cont2:
 						vivo1 = False
 						vivo2 = False
+
+				#Dibujo el fondo
+				ventana.blit(fondo, (0,0))  
 
 				#Dibujo las vidas del jugador 1 y del jugador 2 si y solo si la vida esta presente
 				i = 0; x = 0
@@ -465,10 +466,6 @@ while not salir1:
 				#dibujo los scores
 				ventana.blit(textoScore1, (150, 60))  # imprimo el score1
 				ventana.blit(textoScore2, ((ANCHO-170), 60))  # imprimo el score2
-
-				#pygame.draw.rect(ventana, ORANGE, bola.getRectangulo())
-				#pygame.draw.rect(ventana, ORANGE, jugador1.getRectangulo())
-				#pygame.draw.rect(ventana, ORANGE, jugador2.getRectangulo())
 				
 				#actualizo la pantalla
 				pygame.display.update()
@@ -528,13 +525,132 @@ while not salir1:
 							aux += 1  # Uso un aux para que cada ves que pasa un segundo pueda saberlo
 							maxTime -= 1  # y por cada segundo voy decrementando el tiempo maximo asignado
 
+				#en cualquier caso que halla ganado alguien o sea draw, entrara aca
+				if (not vivo2 and vivo1) or (vivo2 and not vivo1):
+					textoIngreseNombre = FuenteArial.render('Ingrese su Nombre:', 0, (200, 60, 8)) 
+					textoNombre = FuenteArial.render('', 0, (200, 60, 8)) 
+					diccionario2 = [K_a, K_b, K_c, K_d, K_e, K_f, K_a, K_g, K_h, K_i, K_j, K_k, 
+					K_l, K_m, K_n, K_o, K_p, K_q, K_r, K_s, K_t, K_u, K_v, K_w, K_x, K_y, K_t, K_z, 8,
+					32]
+					nombre = ''
+					salirRank = False 
+					#mientras no ingrese su nombre o aprete escape imprimira todo el fondo
+					#nuevamente a como estaba antes de ganar,o perder  esto me sirve para
+					#poder mostrar el nombre del jugador a como valla apretando las teclas
+					#sin perder el fondo del juego
+					while not salirRank:
+						#Dibujo el fondo
+						ventana.blit(fondo, (0,0))  
+
+						#Dibujo las vidas del jugador 1 y del jugador 2 si y solo si la vida esta presente
+						i = 0; x = 0
+						for vida in LstVidas:
+							if i <= cantVidas-1 and vidasOn[i]: 
+								ventana.blit(vida, (POS_VIDAS_HORIZONTAL[0],POS_VIDAS_VERTICAL[x]))
+							if i > cantVidas-1 and vidasOn[i]:
+								ventana.blit(vida, (POS_VIDAS_HORIZONTAL[1],POS_VIDAS_VERTICAL[x]))
+							x += 1
+							i += 1
+							if x == cantVidas:
+								x = 0
+
+						#dibujo la bola
+						bola.dibujarImg(*bola.getPos())
+						
+						#dibujo los jugadores
+						jugador1.dibujarImg(*jugador1.getPos())  # Dibujo al jugador 1, uso un * ya que le paso una tupla
+						jugador2.dibujarImg(*jugador2.getPos())  # Dibujo al jugador 2
+
+						#dibujo el tiempo
+						ventana.blit(textoTime, ((ANCHO/2)-24, 55))  
+
+						#genero los scores
+						textoScore1 = FuenteArial2.render(str(score1), 0, ORANGE)  
+						textoScore2 = FuenteArial2.render(str(score2), 0, ORANGE)   
+						
+						#dibujo los scores
+						ventana.blit(textoScore1, (150, 60))  # imprimo el score1
+						ventana.blit(textoScore2, ((ANCHO-170), 60))  # imprimo el score2
+						
+						#imprimo 'Ingrese su Nombre'
+						ventana.blit(textoIngreseNombre, ((ANCHO/2)-190, (ALTO//2)-70)) 
+
+						#Pregunto si es que se apreto la tecla ESC para salir del menu
+						for evento in pygame.event.get():  # Hay un evento?
+							if evento.type == KEYDOWN:
+								if evento.key == K_ESCAPE:
+									salirRank = True
+								if evento.key in diccionario2:
+									if evento.key == K_BACKSPACE:  #retroceso
+										#Esta sección elimina la ultima letra cuando se detecta un backspace,
+										#mueve todos los caracteres de la cadena original excepto el ultimo a una
+										#auxiliar y luego reemplaza la original por la auxiliar
+										nombreAux = ""
+										for j in range(0, len(nombre) - 1):
+											nombreAux = nombreAux + nombre[j]
+										nombre = nombreAux
+									else:
+										if(len(nombre)<20):  # 20 es el numero maximo del nombre
+											nombre = nombre + chr(evento.key)  # chr pasa un numero ascii a su valor correspondiente en char
+									textoNombre = FuenteArial.render(nombre, 0, (200, 60, 8))
+								if evento.key == 13:  # 13 equivale a apretar ENTER
+									#1-abrir el archivo1 como read y el archivo 2 como escritura
+									#2-leer linea por linea el archivo1 y buscar si hay un nombre igual al ingresado
+									#e ir pasando linea por linea al archivo Scores2.txt
+									#3-si hay un nombre igual en una linea: omito esa linea, agarro el valor que tenia 
+									#y le sumo uno, y lo sigo pasando al scores2.txt .
+									#4-si no hay ningun nombre igual: guardar el nombre al final del archivo en conjunto 
+									#con el puntaje total que sera 1 ya que es la primera ves que aparece
+									#5-cierro el archivo scores y scores2.txt
+									#6-elimino scores y renombro scores2.txt a scores
+									punteroScores = open(fileScores, "a+")  # 1-fileScores esta declarado el inicio del programa
+									punteroScores2 = open(fileScores2, 'w')
+									eof = False; esta = False
+									punteroScores.seek(0)
+									while not eof:
+										linea = punteroScores.readline()  #2-leo una linea
+										lineaScore = ''; lineaNombre = ''; seccionNumero = False
+										#aca separo la aprte de nombre de la parte del score de la linea leida
+										for x in range (len(linea)):
+											if linea[x] == '-':
+												seccionNumero = True
+												
+											if seccionNumero:
+												if linea[x].isdigit():
+													lineaScore = lineaScore + linea[x]
+											else:
+												lineaNombre = lineaNombre + linea[x]
+
+										if lineaNombre == nombre:
+											esta = True  # el nombre ya estaba registrado
+											lineaScore = str(int(lineaScore) + 1)  # al score que tenia le sumo 1
+
+										#si llegue al final del archivo saldre
+										if linea == '':  
+											punteroScores.close()
+											punteroScores2.close()
+											os.remove("Scores.txt")
+											os.rename("Scores2.txt", "Scores.txt")							
+											eof = True
+										else:
+											linea = lineaNombre + '-' + lineaScore + '\n'
+											punteroScores2.write(linea)  # Escribo en el archivo 2 la linea
+									if not esta:
+										punteroScores = open(fileScores, "a")  # 1-fileScores esta declarado el inicio del programa
+										punteroScores.write(nombre + '-' + '1' + '\n')
+										punteroScores.close()
+									salirRank = True
+
+						ventana.blit(textoNombre, ((ANCHO/2)-190, (ALTO//2)))  # imprimo 'Ingrese su Nombre'		
+						pygame.display.update()
+#-------------------------------------------------------------------------------------
 	elif seleccionado == 1: # PARTE DEL MENU "SECCION SCORES"
 		eof = False; menuScores = True; sumaPosTexto = 80; top = 10; cont = 0
 		ventana.fill(WHITE)
-		punteroScores = open(fileScores, "r")
+		punteroScores = open(fileScores, "r")  # fileScores esta declarado el inicio del programa
 
-		textoTitulo = FuenteArial2.render('BEST RANKING', 0, ORANGE)
-		textoSubtitulo = FuenteArial2.render('RANK    NOMBRE    SCORE', 0, ORANGE) 
+		textoTitulo = FuenteArial2.render('TOP RANKINGS', 0, ORANGE)
+		textoSubtitulo = FuenteArial2.render('#RANK    NOMBRE    SCORE', 0, ORANGE) 
 
 		ventana.blit(textoTitulo, ((ANCHO//2)-90,20))
 		ventana.blit(textoSubtitulo, ((ANCHO//2)-190,100))
@@ -542,23 +658,40 @@ while not salir1:
 		while menuScores:  # mientras no aprete ESC no saldre del menu de Scores
 			while not eof:  # estare en el while hasta que halla recorrido todo el archivo
 				#cadena = punteroScores.read()
-				if cont == top-1:  
+				if cont == top-1:  # delimito un maximo de registros a mostrar en pantalla
 					eof = True 
+				
 				cont += 1
 				linea = punteroScores.readline()
-				textoJugScore = FuenteArial2.render(str(linea), 0, ORANGE) 
+				lineaScore = ''; lineaNombre = ''; seccionNumero = False
+				#aca separo la aprte de nombre de la parte del score de la linea leida
+				for x in range (len(linea)):
+					if linea[x] == '-':
+						seccionNumero = True
+											
+					if seccionNumero:
+						if linea[x].isdigit():
+								lineaScore = lineaScore + linea[x]
+					else:
+						lineaNombre = lineaNombre + linea[x]
+
+				textoNombre = FuenteArial2.render(lineaNombre, 0, ORANGE)
+				textoScore = FuenteArial2.render(lineaScore, 0, ORANGE) 
 				textoRank = FuenteArial2.render(str(cont), 0, ORANGE)
 
 				sumaPosTexto += 50 # me sirve para posicionar el texto
 
-				ventana.blit(textoJugScore, ((ANCHO//2)-150, 50+sumaPosTexto))
+				ventana.blit(textoNombre, ((ANCHO//2)-40, 50+sumaPosTexto))
+				ventana.blit(textoScore, ((ANCHO//2)+180, 50+sumaPosTexto))
 				ventana.blit(textoRank, ((ANCHO//2)-180, 50+sumaPosTexto))
 
-				if linea == '':
+				#si llegue al final del archivo saldre
+				if linea == '':  
 					punteroScores.close()
 					eof = True
 
 
+			#Pregunto si es que se apreto la tecla ESC para salir del menu
 			for evento in pygame.event.get():  # Hay un evento?
 				if evento.type == KEYDOWN:
 					if evento.key == K_ESCAPE:
@@ -566,6 +699,7 @@ while not salir1:
 						salirMenuInicial = False  # lo pongo en false porque sino no pueo volver al menu inicial
 			pygame.display.update()
 
+	# SECCION MENU EXIT
 	elif seleccionado == 2:
 		pygame.quit()
 		salir1 = True

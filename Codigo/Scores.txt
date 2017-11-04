@@ -1,10 +1,11 @@
-         damian               1 
-         jony                 2
-         nawan                1
-         martin               3
-         jose                 4
-         nico                 5
-         pablo                0
-         damian               1 
-         jony                 2
-         nawan                1
+damian-5
+jose-1
+jony-3
+nico-5
+martin-1
+newan-2
+persona-1
+magnus-2
+mefisto-1
+anastacia-2
+juanita-1
