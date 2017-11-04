@@ -654,43 +654,46 @@ while not salir1:
 
 		ventana.blit(textoTitulo, ((ANCHO//2)-90,20))
 		ventana.blit(textoSubtitulo, ((ANCHO//2)-190,100))
-
+		cont = 0
 		while menuScores:  # mientras no aprete ESC no saldre del menu de Scores
-			while not eof:  # estare en el while hasta que halla recorrido todo el archivo
-				#cadena = punteroScores.read()
-				if cont == top-1:  # delimito un maximo de registros a mostrar en pantalla
-					eof = True 
-				
-				cont += 1
-				linea = punteroScores.readline()
-				lineaScore = ''; lineaNombre = ''; seccionNumero = False
-				#aca separo la aprte de nombre de la parte del score de la linea leida
+			magnus = open('Scores.txt', 'r')
+			posicionesMax = []
+			top = 10
+			nombreMax = ''; scoreMax = -1; 
+			while cont < top:
+				linea = magnus.readline() # lee la primera
+				lineaScore = '0'; lineaNombre = ''; seccionNumero = False
+
 				for x in range (len(linea)):
 					if linea[x] == '-':
 						seccionNumero = True
-											
+
 					if seccionNumero:
 						if linea[x].isdigit():
-								lineaScore = lineaScore + linea[x]
+							lineaScore = lineaScore + linea[x]
 					else:
 						lineaNombre = lineaNombre + linea[x]
 
-				textoNombre = FuenteArial2.render(lineaNombre, 0, ORANGE)
-				textoScore = FuenteArial2.render(lineaScore, 0, ORANGE) 
-				textoRank = FuenteArial2.render(str(cont), 0, ORANGE)
-
-				sumaPosTexto += 50 # me sirve para posicionar el texto
-
-				ventana.blit(textoNombre, ((ANCHO//2)-40, 50+sumaPosTexto))
-				ventana.blit(textoScore, ((ANCHO//2)+180, 50+sumaPosTexto))
-				ventana.blit(textoRank, ((ANCHO//2)-180, 50+sumaPosTexto))
+				if (int(lineaScore) > scoreMax) and (lineaNombre not in posicionesMax):
+					scoreMax = int(lineaScore)
+					nombreMax = lineaNombre
 
 				#si llegue al final del archivo saldre
 				if linea == '':  
-					punteroScores.close()
-					eof = True
+					posicionesMax.append(nombreMax)
+					magnus.seek(0)
+					cont += 1
+					textoNombre = FuenteArial2.render(nombreMax, 0, ORANGE)
+					textoScore = FuenteArial2.render(str(scoreMax), 0, ORANGE) 
+					textoRank = FuenteArial2.render(str(cont), 0, ORANGE)
+					scoreMax = -1
 
+					sumaPosTexto += 50 # me sirve para posicionar el texto
 
+					ventana.blit(textoNombre, ((ANCHO//2)-40, 50+sumaPosTexto))
+					ventana.blit(textoScore, ((ANCHO//2)+180, 50+sumaPosTexto))
+					ventana.blit(textoRank, ((ANCHO//2)-180, 50+sumaPosTexto))
+			punteroScores.close()
 			#Pregunto si es que se apreto la tecla ESC para salir del menu
 			for evento in pygame.event.get():  # Hay un evento?
 				if evento.type == KEYDOWN:
