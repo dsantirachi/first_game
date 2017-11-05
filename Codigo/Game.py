@@ -27,12 +27,14 @@ MUSIC_FONDO = (	"Music/fondos/fondo-ViolentPornography.wav",
 				"Music/fondos/MusicGame.wav",
 				"Music/fondos/fondo-africa.wav",
 				"Music/fondos/fondo-the_fox.wav")
+MUSIC_MENU = "Music/inicio/menu.wav"
 
 draw = pygame.mixer.Sound(DRAW)
 win = pygame.mixer.Sound(WIN)
 reboteDelantero = pygame.mixer.Sound(REBOTE_DELANTERO)
 reboteTrasero = pygame.mixer.Sound(REBOTE_TRASERO)
 ripVida = pygame.mixer.Sound(RIP_VIDA)
+musicMenu = pygame.mixer.Sound(MUSIC_MENU)
 
 #colors:
 WHITE = (255, 255, 255)
@@ -77,6 +79,8 @@ posTexto = (((ANCHO // 2)-50, (ALTO // 2) + 90),  # [0,0],[1,0]
 seleccionado = 0  # marco cual va a ser el boton de menu actualmente seleccionado
 salir1 = False; salirMenuInicial = False
 while not salir1:
+	if seleccionado == 0:
+		musicMenu.play()
 	while not salirMenuInicial:
 		ventana.blit(fondoMenu, (0,0))
 		#seccion seleccionar menu	
@@ -109,7 +113,9 @@ while not salir1:
 						salirMenuInicial = True
 		pygame.display.update()
 
+	#SECCION MENU START
 	if seleccionado == 0:
+		musicMenu.stop()
 		#jugadores
 		velocidadJugador = 8
 		velocidadBola = 10
@@ -717,7 +723,7 @@ while not salir1:
 		ventana.blit(fondoHowToGame, (0,0))
 		cantLineas = 6; acumPos = 100; listaHow = []; menuHow = True; paso = False
 		textoHow = ('JUGADOR 1                 JUGADOR 2',
-			'Arriba:                 Q                               K_UP',
+			'Arriba:                 W                               K_UP',
 			'Abajo:                  S                               K_DOWN',
 			'Izquierda:             A                               K_LEFT',
 			'Derecha:              D                               K_RIGHT',
