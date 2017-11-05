@@ -46,17 +46,17 @@ FuenteArial = pygame.font.SysFont("Arial", pixelFuenteY)
 FuenteArial2 = pygame.font.SysFont("Arial", 40)
 FuenteComic = pygame.font.SysFont('comicsansms', 40)
 
-textStartOrange = FuenteArial.render('Start', 0, ORANGE)
-textStartGreen = FuenteArial.render('Start', 0, GREEN)
+textStartOrange = FuenteArial.render('Start', True, ORANGE)
+textStartGreen = FuenteArial.render('Start', True, GREEN)
 
-textScoresOrange = FuenteArial.render('Scores', 0, ORANGE)
-textScoresGreen = FuenteArial.render('Scores', 0, GREEN)
+textScoresOrange = FuenteArial.render('Scores', True, ORANGE)
+textScoresGreen = FuenteArial.render('Scores', True, GREEN)
 
-textHowToGameOrange = FuenteArial.render('How To Game', 0, ORANGE)
-textHowToGameGreen = FuenteArial.render('How To Game', 0, GREEN)
+textHowToGameOrange = FuenteArial.render('How To Game', True, ORANGE)
+textHowToGameGreen = FuenteArial.render('How To Game', True, GREEN)
 
-textExitOrange = FuenteArial.render('Exit', 0, ORANGE)
-textExitGreen = FuenteArial.render('Exit', 0, GREEN)
+textExitOrange = FuenteArial.render('Exit', True, ORANGE)
+textExitGreen = FuenteArial.render('Exit', True, GREEN)
 
 #Archivo de texto
 fileScores = 'Scores.txt' # nombre del archivo principal para guardar los scores
@@ -228,7 +228,7 @@ while not salir1:
 				if aux == Time:
 					aux += 1  # Uso un aux para que cada ves que pasa un segundo pueda saberlo
 					maxTime -= 1  # y por cada segundo voy decrementando el tiempo maximo asignado
-				textoTime = FuenteArial.render(str(maxTime), 0, (200, 60, 8))  # guardo el tiempo en un texto arial
+				textoTime = FuenteArial.render(str(maxTime), True, (200, 60, 8))  # guardo el tiempo en un texto arial
 				
 				#Verifico si hay eventos(QUIT, apretar y soltar teclas) y hago algo
 				for evento in pygame.event.get():  # Hay un evento?
@@ -470,8 +470,8 @@ while not salir1:
 				ventana.blit(textoTime, ((ANCHO/2)-24, 55))  
 
 				#genero los scores
-				textoScore1 = FuenteArial2.render(str(score1), 0, ORANGE)  
-				textoScore2 = FuenteArial2.render(str(score2), 0, ORANGE)   
+				textoScore1 = FuenteArial2.render(str(score1), True, ORANGE)  
+				textoScore2 = FuenteArial2.render(str(score2), True, ORANGE)   
 				#dibujo los scores
 				ventana.blit(textoScore1, (150, 60))  # imprimo el score1
 				ventana.blit(textoScore2, ((ANCHO-170), 60))  # imprimo el score2
@@ -487,7 +487,7 @@ while not salir1:
 					#Mido el Tiempo
 					maxTime = 3
 					aux = int(pygame.time.get_ticks()/1000) + 1 
-					textoGano = FuenteArial.render("Player 2 Win", 0, (200, 60, 8))  # guardo el tiempo en un texto arial
+					textoGano = FuenteArial.render("Player 2 Win", True, (200, 60, 8))  # guardo el tiempo en un texto arial
 
 					while maxTime!=0:
 						Time = int(pygame.time.get_ticks()/1000)  # mido el tiempo
@@ -505,7 +505,7 @@ while not salir1:
 					#Mido el Tiempo
 					maxTime = 3
 					aux = int(pygame.time.get_ticks()/1000) + 1 
-					textoGano = FuenteArial.render("Player 1 Win", 0, (200, 60, 8))  # guardo el tiempo en un texto arial
+					textoGano = FuenteArial.render("Player 1 Win", True, (200, 60, 8))  # guardo el tiempo en un texto arial
 
 					while maxTime!=0:
 						Time = int(pygame.time.get_ticks()/1000)  # mido el tiempo
@@ -523,7 +523,7 @@ while not salir1:
 					#Mido el Tiempo
 					maxTime = 3
 					aux = int(pygame.time.get_ticks()/1000) + 1 
-					textoDraw = FuenteArial.render("Draw", 0, (200, 60, 8))  # guardo el tiempo en un texto arial
+					textoDraw = FuenteArial.render("Draw", True, (200, 60, 8))  # guardo el tiempo en un texto arial
 
 					while maxTime!=0:
 						Time = int(pygame.time.get_ticks()/1000)  # mido el tiempo
@@ -536,8 +536,8 @@ while not salir1:
 
 				#en cualquier caso que halla ganado alguien o sea draw, entrara aca
 				if (not vivo2 and vivo1) or (vivo2 and not vivo1):
-					textoIngreseNombre = FuenteArial.render('Ingrese su Nombre:', 0, (200, 60, 8)) 
-					textoNombre = FuenteArial.render('', 0, (200, 60, 8)) 
+					textoIngreseNombre = FuenteArial.render('Ingrese su Nombre:', True, (200, 60, 8)) 
+					textoNombre = FuenteArial.render('', True, (200, 60, 8)) 
 					diccionario2 = [K_a, K_b, K_c, K_d, K_e, K_f, K_a, K_g, K_h, K_i, K_j, K_k, 
 					K_l, K_m, K_n, K_o, K_p, K_q, K_r, K_s, K_t, K_u, K_v, K_w, K_x, K_y, K_t, K_z, 8,
 					32]
@@ -574,8 +574,8 @@ while not salir1:
 						ventana.blit(textoTime, ((ANCHO/2)-24, 55))  
 
 						#genero los scores
-						textoScore1 = FuenteArial2.render(str(score1), 0, ORANGE)  
-						textoScore2 = FuenteArial2.render(str(score2), 0, ORANGE)   
+						textoScore1 = FuenteArial2.render(str(score1), True, ORANGE)  
+						textoScore2 = FuenteArial2.render(str(score2), True, ORANGE)   
 						
 						#dibujo los scores
 						ventana.blit(textoScore1, (150, 60))  # imprimo el score1
@@ -601,7 +601,7 @@ while not salir1:
 									else:
 										if(len(nombre)<20):  # 20 es el numero maximo del nombre
 											nombre = nombre + chr(evento.key)  # chr pasa un numero ascii a su valor correspondiente en char
-									textoNombre = FuenteArial.render(nombre, 0, (200, 60, 8))
+									textoNombre = FuenteArial.render(nombre, True, (200, 60, 8))
 								if evento.key == 13:  # 13 equivale a apretar ENTER
 									#1-abrir el archivo1 como read y el archivo 2 como escritura
 									#2-leer linea por linea el archivo1 y buscar si hay un nombre igual al ingresado
@@ -659,8 +659,8 @@ while not salir1:
 		#ventana.fill(WHITE)
 		punteroScores = open(fileScores, "r")  # fileScores esta declarado el inicio del programa
 
-		textoTitulo = FuenteComic.render('TOP   RANKINGS', 0, GOLDEN)
-		textoSubtitulo = FuenteComic.render('#RANK   NOMBRE    SCORE', 0, GOLDEN) 
+		textoTitulo = FuenteComic.render('TOP   RANKINGS', True, GOLDEN)
+		textoSubtitulo = FuenteComic.render('#RANK   NOMBRE    SCORE', True, GOLDEN) 
 
 		ventana.blit(textoTitulo, ((ANCHO//2)-155,60))
 		ventana.blit(textoSubtitulo, ((ANCHO//2)-250,120))
@@ -693,9 +693,9 @@ while not salir1:
 					posicionesMax.append(nombreMax)
 					magnus.seek(0)
 					cont += 1
-					textoNombre = FuenteArial2.render(nombreMax, 0, GOLDEN)
-					textoScore = FuenteArial2.render(str(scoreMax), 0, GOLDEN) 
-					textoRank = FuenteArial2.render(str(cont), 0, GOLDEN)
+					textoNombre = FuenteArial2.render(nombreMax, True, GOLDEN)
+					textoScore = FuenteArial2.render(str(scoreMax), True, GOLDEN) 
+					textoRank = FuenteArial2.render(str(cont), True, GOLDEN)
 					scoreMax = -1
 
 					sumaPosTexto += 45 # me sirve para posicionar el texto
@@ -715,13 +715,30 @@ while not salir1:
 	# SECCION MENU HOW TO GAME
 	elif seleccionado == 2:
 		ventana.blit(fondoHowToGame, (0,0))
-		pygame.display.update()  
+		cantLineas = 6; acumPos = 100; listaHow = []; menuHow = True; paso = False
+		textoHow = ('JUGADOR 1                 JUGADOR 2',
+			'Arriba:                 Q                               K_UP',
+			'Abajo:                  S                               K_DOWN',
+			'Izquierda:             A                               K_LEFT',
+			'Derecha:              D                               K_RIGHT',
+			'ESC -> Volver al menu')
+		posLineas = (240, 400, 400, 400, 400, 180)
+		while menuHow:
+			if not paso:
+				paso = True
+				for x in range(cantLineas):
+					acumPos = acumPos + 70
+					textoHowAux = FuenteArial2.render(textoHow[x], True, GOLDEN, ORANGE)
+					ventana.blit(textoHowAux, ((ANCHO//2)-posLineas[x], acumPos))
+
 		#Pregunto si es que se apreto la tecla ESC para salir del menu
-		for evento in pygame.event.get():  # Hay un evento?
-			if evento.type == KEYDOWN:
-				if evento.key == K_ESCAPE:
-					menuScores = False  
-					salirMenuInicial = False  # lo pongo en false porque sino no pueo volver al menu inicial
+			for evento in pygame.event.get():  # Hay un evento?
+				if evento.type == KEYDOWN:
+					if evento.key == K_ESCAPE:
+						menuHow = False  
+						salirMenuInicial = False  # lo pongo en false porque sino no pueo volver al menu inicial
+
+			pygame.display.update()  
 
 	# SECCION MENU EXIT
 	elif seleccionado == 3:
