@@ -218,7 +218,7 @@ while not salir1:
 			direccionHorizontal = 'derecha'
 			direccionVertical = 'subir'
 			#Variables para medir tiempo
-			maxTime = 91
+			maxTime = 90
 			initialTime = 88
 			aux = int(pygame.time.get_ticks()/1000) + 1
 			# guardo el tiempo en un aux, esto me sirve para que cuando comienze la partida sepa cuanto
