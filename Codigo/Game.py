@@ -12,6 +12,9 @@ ALTO = 768
 ventana = pygame.display.set_mode((ANCHO, ALTO), pygame.FULLSCREEN)
 pygame.display.set_caption("Battle Front")
 fondoMenu = pygame.image.load("Imagenes/fondoMenu.jpg")
+fondoScore = pygame.image.load("Imagenes/fondoScore.jpg")
+fondoHowToGame = pygame.image.load("Imagenes/fondoHowToGame.jpg")
+
 
 #Musica
 REBOTE_TRASERO = "Music/efectos/reboteTrasero.wav" 
@@ -35,17 +38,22 @@ ripVida = pygame.mixer.Sound(RIP_VIDA)
 WHITE = (255, 255, 255)
 ORANGE = (200, 60, 8)
 GREEN = (00, 255, 00)
+GOLDEN = (218, 165, 32)
 
 #Fuentes y textos
 pixelFuenteY = 56 
 FuenteArial = pygame.font.SysFont("Arial", pixelFuenteY)
 FuenteArial2 = pygame.font.SysFont("Arial", 40)
+FuenteComic = pygame.font.SysFont('comicsansms', 40)
 
 textStartOrange = FuenteArial.render('Start', 0, ORANGE)
 textStartGreen = FuenteArial.render('Start', 0, GREEN)
 
 textScoresOrange = FuenteArial.render('Scores', 0, ORANGE)
 textScoresGreen = FuenteArial.render('Scores', 0, GREEN)
+
+textHowToGameOrange = FuenteArial.render('How To Game', 0, ORANGE)
+textHowToGameGreen = FuenteArial.render('How To Game', 0, GREEN)
 
 textExitOrange = FuenteArial.render('Exit', 0, ORANGE)
 textExitGreen = FuenteArial.render('Exit', 0, GREEN)
@@ -54,16 +62,17 @@ textExitGreen = FuenteArial.render('Exit', 0, GREEN)
 fileScores = 'Scores.txt' # nombre del archivo principal para guardar los scores
 fileScores2 = 'Scores2.txt' # nombre del archivo auxiliar para hacer operaciones
 #Zona de menu
-#0-Start, 1-Scores, 2-Exit
-textos = ((textStartOrange, textScoresOrange, textExitOrange),
-	(textStartGreen, textScoresGreen, textExitGreen))
+#0-Start, 1-Scores, 2-How To Game, 3-Exit
+textos = ((textStartOrange, textScoresOrange,textHowToGameOrange, textExitOrange),
+	(textStartGreen, textScoresGreen, textHowToGameGreen, textExitGreen))
 """Matriz de Texto
-[0,0][0,1][0,2]
-[1,0][1,1][1,2]
+[0,0][0,1][0,2][0,3]
+[1,0][1,1][1,2][1,3]
 """
-posTexto = (((ANCHO // 2)-50, (ALTO // 2) + 105),
-	((ANCHO // 2)-73, (ALTO // 2) + 170),
-	((ANCHO // 2)-40, (ALTO // 2) + 235))
+posTexto = (((ANCHO // 2)-50, (ALTO // 2) + 90),  # [0,0],[1,0]
+	((ANCHO // 2)-73, (ALTO // 2) + 150),  # [0,1],[1,1]
+	((ANCHO // 2)-150, (ALTO // 2) + 215),  # [0,2][1,2]
+	((ANCHO // 2)-40, (ALTO // 2) + 280))  # [0,3][1,3]
 
 seleccionado = 0  # marco cual va a ser el boton de menu actualmente seleccionado
 salir1 = False; salirMenuInicial = False
@@ -646,14 +655,15 @@ while not salir1:
 #-------------------------------------------------------------------------------------
 	elif seleccionado == 1: # PARTE DEL MENU "SECCION SCORES"
 		eof = False; menuScores = True; sumaPosTexto = 80; top = 10; cont = 0
-		ventana.fill(WHITE)
+		ventana.blit(fondoScore, (0,0))  
+		#ventana.fill(WHITE)
 		punteroScores = open(fileScores, "r")  # fileScores esta declarado el inicio del programa
 
-		textoTitulo = FuenteArial2.render('TOP RANKINGS', 0, ORANGE)
-		textoSubtitulo = FuenteArial2.render('#RANK    NOMBRE    SCORE', 0, ORANGE) 
+		textoTitulo = FuenteComic.render('TOP   RANKINGS', 0, GOLDEN)
+		textoSubtitulo = FuenteComic.render('#RANK   NOMBRE    SCORE', 0, GOLDEN) 
 
-		ventana.blit(textoTitulo, ((ANCHO//2)-90,20))
-		ventana.blit(textoSubtitulo, ((ANCHO//2)-190,100))
+		ventana.blit(textoTitulo, ((ANCHO//2)-155,60))
+		ventana.blit(textoSubtitulo, ((ANCHO//2)-250,120))
 		cont = 0
 		while menuScores:  # mientras no aprete ESC no saldre del menu de Scores
 			magnus = open('Scores.txt', 'r')
@@ -683,12 +693,12 @@ while not salir1:
 					posicionesMax.append(nombreMax)
 					magnus.seek(0)
 					cont += 1
-					textoNombre = FuenteArial2.render(nombreMax, 0, ORANGE)
-					textoScore = FuenteArial2.render(str(scoreMax), 0, ORANGE) 
-					textoRank = FuenteArial2.render(str(cont), 0, ORANGE)
+					textoNombre = FuenteArial2.render(nombreMax, 0, GOLDEN)
+					textoScore = FuenteArial2.render(str(scoreMax), 0, GOLDEN) 
+					textoRank = FuenteArial2.render(str(cont), 0, GOLDEN)
 					scoreMax = -1
 
-					sumaPosTexto += 50 # me sirve para posicionar el texto
+					sumaPosTexto += 45 # me sirve para posicionar el texto
 
 					ventana.blit(textoNombre, ((ANCHO//2)-40, 50+sumaPosTexto))
 					ventana.blit(textoScore, ((ANCHO//2)+180, 50+sumaPosTexto))
@@ -702,8 +712,19 @@ while not salir1:
 						salirMenuInicial = False  # lo pongo en false porque sino no pueo volver al menu inicial
 			pygame.display.update()
 
-	# SECCION MENU EXIT
+	# SECCION MENU HOW TO GAME
 	elif seleccionado == 2:
+		ventana.blit(fondoHowToGame, (0,0))
+		pygame.display.update()  
+		#Pregunto si es que se apreto la tecla ESC para salir del menu
+		for evento in pygame.event.get():  # Hay un evento?
+			if evento.type == KEYDOWN:
+				if evento.key == K_ESCAPE:
+					menuScores = False  
+					salirMenuInicial = False  # lo pongo en false porque sino no pueo volver al menu inicial
+
+	# SECCION MENU EXIT
+	elif seleccionado == 3:
 		pygame.quit()
 		salir1 = True
 
