@@ -663,7 +663,7 @@ while not salir1:
 		eof = False; menuScores = True; sumaPosTexto = 80; top = 10; cont = 0
 		ventana.blit(fondoScore, (0,0))  
 		#ventana.fill(WHITE)
-		punteroScores = open(fileScores, "r")  # fileScores esta declarado el inicio del programa
+		#punteroScores = open(fileScores, "r")  # fileScores esta declarado el inicio del programa
 
 		textoTitulo = FuenteComic.render('TOP   RANKINGS', True, GOLDEN)
 		textoSubtitulo = FuenteComic.render('#RANK   NOMBRE    SCORE', True, GOLDEN) 
@@ -672,12 +672,12 @@ while not salir1:
 		ventana.blit(textoSubtitulo, ((ANCHO//2)-250,120))
 		cont = 0
 		while menuScores:  # mientras no aprete ESC no saldre del menu de Scores
-			magnus = open('Scores.txt', 'r')
+			punteroScores = open('Scores.txt', 'r')
 			posicionesMax = []
 			top = 10
 			nombreMax = ''; scoreMax = -1; 
 			while cont < top:
-				linea = magnus.readline() # lee la primera
+				linea = punteroScores.readline() # lee la primera
 				lineaScore = '0'; lineaNombre = ''; seccionNumero = False
 
 				for x in range (len(linea)):
@@ -697,7 +697,7 @@ while not salir1:
 				#si llegue al final del archivo saldre
 				if linea == '':  
 					posicionesMax.append(nombreMax)
-					magnus.seek(0)
+					punteroScores.seek(0)
 					cont += 1
 					textoNombre = FuenteArial2.render(nombreMax, True, GOLDEN)
 					textoScore = FuenteArial2.render(str(scoreMax), True, GOLDEN) 
